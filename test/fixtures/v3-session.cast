@@ -1,0 +1,11 @@
+{"version":3,"term":{"cols":80,"rows":24,"type":"tmux-256color","version":"tmux 3.7c"},"timestamp":1788417611,"env":{"SHELL":"/bin/bash"}}
+[0.004, "o", "\u001b]0;@demo-host:~\u0007"]
+[0.000, "o", "\u001b[?2004h"]
+[0.000, "o", "[user@demo-host ~]$ "]
+[2.012, "o", "grep -n cardwire /usr/share/omarchy/bin/omarchy-toggle-hybrid-gpu; echo toggle-check-done"]
+[0.085, "o", "\r\n\u001b[?2004l\r"]
+[0.002, "o", "3:# omarchy:summary=Toggle dedicated vs integrated GPU mode via cardwire (for hybrid gpu laptops, like Asus G14).\r\n6:if omarchy-cmd-missing cardwire; then\r"]
+[0.000, "o", "toggle-check-done\r\n"]
+[0.341, "o", "exit\r\n\u001b[?2004l\r"]
+[0.000, "o", "exit\r\n"]
+[0.001, "x", "0"]

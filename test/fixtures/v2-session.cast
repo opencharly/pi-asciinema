@@ -1,0 +1,6 @@
+{"version":2,"width":100,"height":30,"timestamp":1710000000,"title":"demo","env":{"SHELL":"/bin/zsh"},"idle_time_limit":2.0}
+[0.25, "o", "\u001b[32mok\u001b[0m\r\n"]
+[1.50, "o", "hello v2 world\r\n"]
+[2.75, "m", "chapter two"]
+[3.00, "x", {"event":"resize","width":120,"height":40}]
+[3.10, "o", "\u001b[31mfail\u001b[0m\r\n"]
