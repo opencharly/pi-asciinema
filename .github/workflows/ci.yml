@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: L1/L2 tests (parser/render unit + direct-execute)
+        run: npm test
+      - name: Install pi CLI (for load check)
+        run: npm i -g @earendil-works/pi-coding-agent@0.84.4
+      - name: Extension load check (no LLM)
+        run: npm run check:load

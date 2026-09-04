@@ -1,0 +1,38 @@
+name: validate-pi-p
+
+# Full L3 validation: real `pi -p` agent runs (summary/text/markers/v2/malformed/
+# bounds) plus a --mode json observability case proving the cast_read tool_call.
+# Runs on PRs and dispatch; SKIPS when the org has not configured the secret
+# (ci.yml still covers L1/L2 + load check). Configure in repo settings:
+#   Secrets:  PI_VALIDATE_API_KEY   (e.g. OpenAI key)
+#   Variables: PI_VALIDATE_PROVIDER (default openai)
+#              PI_VALIDATE_MODEL    (default gpt-4o-mini)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  l3:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.PI_VALIDATE_API_KEY != '' }}
+    env:
+      PI_API_KEY: ${{ secrets.PI_VALIDATE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Install pi CLI
+        run: npm i -g @earendil-works/pi-coding-agent@0.84.4
+      - name: L3 pi -p matrix (incl. json-mode observability)
+        run: >
+          PI_JSON_OBS=1
+          node scripts/validate-pi-p.mjs
+          --provider "${{ vars.PI_VALIDATE_PROVIDER || 'openai' }}"
+          --model "${{ vars.PI_VALIDATE_MODEL || 'gpt-4o-mini' }}"

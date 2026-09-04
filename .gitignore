@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.tgz
+
+# local evidence casts copied from eval-omarchy/media (never commit — org evidence stays gitignored)
+dev-fixtures/
+.tmp-*

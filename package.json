@@ -1,0 +1,48 @@
+{
+  "name": "pi-asciinema",
+  "version": "0.1.0",
+  "description": "Pi agent extension: cast_read — read and analyze asciinema .cast terminal recordings directly from agents",
+  "type": "module",
+  "keywords": ["pi-package", "pi", "pi-coding-agent", "asciinema", "cast", "tool"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opencharly/pi-asciinema"
+  },
+  "files": [
+    "extensions",
+    "src",
+    "scripts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "pi": {
+    "extensions": ["./extensions"]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
+  },
+  "peerDependenciesMeta": {
+    "@earendil-works/pi-coding-agent": {
+      "optional": true
+    },
+    "typebox": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "0.84.4",
+    "@types/node": "24.13.3",
+    "typebox": "1.1.38",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "check:load": "pi --no-extensions -e ./extensions/index.ts --list-models __pi_asciinema_load_check__",
+    "validate:pi-p": "node scripts/validate-pi-p.mjs",
+    "validate:bare": "node scripts/validate-bare.mjs"
+  }
+}
