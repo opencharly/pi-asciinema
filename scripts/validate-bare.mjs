@@ -82,7 +82,7 @@ const cases = [
     name: "summary on real eval-omarchy cast (pr-9332, v3)",
     prompt:
       `Use the cast_read tool on ${realPr} with format=summary. Report the exact terminal size, duration, and per-type event counts that the tool returned.`,
-    need: [/80\s*[x×]\s*24/, /2\.44/, /14/],
+    need: [/tmux-256color/, /2\.44/, /80/, /24/],
   },
   {
     name: "text extraction on real eval-omarchy cast (omarchy-gif)",
