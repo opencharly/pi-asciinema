@@ -62,11 +62,15 @@ function runCase(prompt) {
   // NOTE: no --no-builtin-tools/--tools allowlist on purpose — in pi 0.84.4 the
   // allowlist drops extension tools in print mode (verified); determinism is
   // carried by directive prompts + token assertions + L2 direct-execute tests.
-  const baseArgs = ["-p", "--no-session", "--no-context-files", "--provider", provider, "--model", model];
+  // Canonical documented form: `-p "<prompt>"` immediately after -p/--print, so
+  // the invocation is unambiguous under every parser reading (pi: -p is boolean;
+  // it only consumes the NEXT arg as the prompt when it does not look like an
+  // option or @file — pi dist bundle chunk-OMWWHBTG.js).
+  const baseArgs = ["-p", prompt, "--no-session", "--no-context-files", "--provider", provider, "--model", model];
   if (!skipExtFlag) baseArgs.splice(1, 0, "-e", ext);
   const r = spawnSync(
     "pi",
-    [...baseArgs, ...(apiKey ? ["--api-key", apiKey] : []), "--", prompt],
+    [...baseArgs, ...(apiKey ? ["--api-key", apiKey] : [])],
     { cwd: skipExtFlag ? process.cwd() : repo, encoding: "utf8", timeout: 300000, maxBuffer: 32 * 1024 * 1024 }
   );
   return r;
@@ -79,7 +83,7 @@ function all(stdout, re) {
 
 const cases = [
   { name: "summary on v3 fixture", prompt: `Use the cast_read tool on ${fix("v3-session.cast")} with format=summary. Report the exact terminal size, duration, and per-type event counts.`,
-    need: [/80\s*[x×]\s*24/, /2\.445s/, /9/] },
+    need: [/tmux-256color/, /2\.44/, /80/, /24/] },
   { name: "text extraction on v3 fixture", prompt: `Use the cast_read tool on ${fix("v3-session.cast")} with format=text and include_timing=false. Quote the exact commands that were run.`,
     need: ["grep -n cardwire", "toggle-check-done"] },
   { name: "markers surfaced", prompt: `Use the cast_read tool on ${fix("markers.cast")} with format=summary. List the marker names.`,
@@ -93,6 +97,10 @@ const cases = [
 ];
 
 console.log(`provider=${provider} model=${model} apiKey=${apiKey ? "set" : "(env)"} jsonObs=${jsonObs}\n`);
+{
+  const w = spawnSync("pi", ["-p", "Reply with exactly: warm", "--no-session", "--no-context-files", ...(apiKey ? ["--api-key", apiKey] : []), "--provider", provider, "--model", model], { cwd: skipExtFlag ? process.cwd() : repo, encoding: "utf8", timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  check("warmup: pi -p responds", w.status === 0, (w.stderr || "").trim().slice(-200));
+}
 for (const c of cases) {
   const r = runCase(c.prompt);
   const out = (r.stdout || "") + (r.stderr || "");

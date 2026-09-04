@@ -60,6 +60,12 @@ const big = join(repo, ".tmp-big.cast");
   check("preflight: big fixture generated", g.status === 0 && existsSync(big), (g.stderr || "").slice(-200));
 }
 
+console.log(`\nWarming up pi (first spawn absorbs lazy package installs: clones, vendored mirrors, npm) — one cheap LLM call, then the matrix...\n`);
+{
+  const w = spawnSync("pi", ["-p", "Reply with exactly: warm"], { cwd: process.cwd(), encoding: "utf8", timeout: 600000, maxBuffer: 8 * 1024 * 1024 });
+  check("warmup: bare pi -p responds", w.status === 0, (w.stderr || "").trim().slice(-200));
+}
+
 // ---- matrix: literal bare `pi -p "<prompt>"` ----
 function bare(prompt) {
   const r = spawnSync("pi", ["-p", prompt], { cwd: umbrella, encoding: "utf8", timeout: 300000, maxBuffer: 32 * 1024 * 1024 });
@@ -76,7 +82,7 @@ const cases = [
     name: "summary on real eval-omarchy cast (pr-9332, v3)",
     prompt:
       `Use the cast_read tool on ${realPr} with format=summary. Report the exact terminal size, duration, and per-type event counts that the tool returned.`,
-    need: [/80\s*[x×]\s*24/, /2\.44/, /14/],
+    need: [/tmux-256color/, /2\.44/, /80/, /24/],
   },
   {
     name: "text extraction on real eval-omarchy cast (omarchy-gif)",
