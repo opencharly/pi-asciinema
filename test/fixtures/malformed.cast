@@ -1,0 +1,7 @@
+{"version":2,"width":80,"height":24}
+[0.10, "o", "good line\r\n"]
+[0.20, "o", "truncated json   [0.21,
+[0.30, "z", "bad type"]
+{"not": "an event"}
+[0.40, "o", "after garbage\r\n"]
+[0.50, "x", 0]

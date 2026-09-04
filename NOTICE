@@ -1,0 +1,9 @@
+Portions of this software are modeled on the asciinema-player parser
+(src/parser/asciicast.js, versions 2/3 event-timing semantics and v1 layout),
+Copyright (c) asciinema contributors, licensed under the MIT License
+<https://github.com/asciinema/asciinema-player/blob/main/LICENSE>. This project
+re-implements the parsing logic in TypeScript with zero runtime dependencies;
+no code is copied verbatim.
+
+The asciicast file format is documented at:
+https://docs.asciinema.org/manual/asciicast/v2/
