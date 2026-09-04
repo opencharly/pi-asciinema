@@ -18,7 +18,8 @@
     "NOTICE"
   ],
   "pi": {
-    "extensions": ["./extensions"]
+    "extensions": ["./extensions"],
+    "skills": ["./skills"]
   },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*",
