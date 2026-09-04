@@ -93,6 +93,10 @@ const cases = [
 ];
 
 console.log(`provider=${provider} model=${model} apiKey=${apiKey ? "set" : "(env)"} jsonObs=${jsonObs}\n`);
+{
+  const w = spawnSync("pi", ["-p", "--no-session", "--no-context-files", ...(apiKey ? ["--api-key", apiKey] : []), "--provider", provider, "--model", model, "--", "Reply with exactly: warm"], { cwd: repo, encoding: "utf8", timeout: 300000, maxBuffer: 8 * 1024 * 1024 });
+  check("warmup: pi -p responds", w.status === 0, (w.stderr || "").trim().slice(-200));
+}
 for (const c of cases) {
   const r = runCase(c.prompt);
   const out = (r.stdout || "") + (r.stderr || "");

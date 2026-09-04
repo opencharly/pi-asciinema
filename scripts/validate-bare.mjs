@@ -60,6 +60,12 @@ const big = join(repo, ".tmp-big.cast");
   check("preflight: big fixture generated", g.status === 0 && existsSync(big), (g.stderr || "").slice(-200));
 }
 
+console.log(`\nWarming up pi (first spawn absorbs lazy package installs: clones, vendored mirrors, npm) — one cheap LLM call, then the matrix...\n`);
+{
+  const w = spawnSync("pi", ["-p", "Reply with exactly: warm"], { cwd: process.cwd(), encoding: "utf8", timeout: 600000, maxBuffer: 8 * 1024 * 1024 });
+  check("warmup: bare pi -p responds", w.status === 0, (w.stderr || "").trim().slice(-200));
+}
+
 // ---- matrix: literal bare `pi -p "<prompt>"` ----
 function bare(prompt) {
   const r = spawnSync("pi", ["-p", prompt], { cwd: umbrella, encoding: "utf8", timeout: 300000, maxBuffer: 32 * 1024 * 1024 });
